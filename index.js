@@ -222,6 +222,6 @@ app.post('/send-email', (req, res) => {
 
 })
 
-app.listen(8080, () => {
-    console.log('Server is running at PORT 8080');
+app.listen(10000, () => {
+    console.log('Server is running at PORT 10000');
 })
