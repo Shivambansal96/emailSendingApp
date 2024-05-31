@@ -3,27 +3,36 @@
 const express = require('express');
 const nodemailer = require('nodemailer')
 
+require('dotenv').config();
+
 
     // This is for gmail 
 
-// const transporter = nodemailer.createTransport({
-//     host: 'smtp.gmail.com', // Replace with your provider's SMTP server
-//     port: 587, // Port may vary depending on your provider
-//     secure: true, // Use true for TLS, false for non-TLS (consult your provider)
-//     auth: {
-//       user: 'process.env.Username', // Replace with your email address
-//       pass: 'process.env.Password' // Replace with your email password
-//     }
-//   });
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: 'smtp.gmail.com', // Replace with your provider's SMTP server
+    port: 465, // 465 for true nad 587 for false, Port may vary depending on your provider
+    secure: true, // Use true for TLS, false for non-TLS (consult your provider)
+    auth: {
+      user: process.env.User_name, // Replace with your email address
+      pass: process.env.PASSWORD // Replace with your email password
+    }
+  });
+  // console.log(process.env.User_name);
+
+  // console.log(transporter.auth.user);
+  // console.log(transporter.auth.pass);
+  // console.log(process.env.User_name);
+  // console.log(process.env.PASSWORD);
 
 // Dummy Mailer 
 
-const transporter = nodemailer.createTransport({
-    host: 'localhost', // Replace with your provider's SMTP server
-    port: 1025, // Port may vary depending on your provider
-    secure: false, // Use true for TLS, false for non-TLS (consult your provider)
-    debug: true
-  });
+// const transporter = nodemailer.createTransport({
+//     host: 'localhost', // Replace with your provider's SMTP server
+//     port: 1025, // Port may vary depending on your provider
+//     secure: false, // Use true for TLS, false for non-TLS (consult your provider)
+//     debug: true
+//   });
 
 //   const mailOptions = {
 //     from: 'donotreply@dG.com', // Replace with your email address
@@ -121,7 +130,7 @@ const transporter = nodemailer.createTransport({
 //   });
 
 const app = express();
-
+app.use(express.json())
 app.use(express.urlencoded())
 
 app.get('/', (req, res) => {
@@ -203,7 +212,10 @@ app.post('/send-email', (req, res) => {
 
 
     const mailOptions = {
-        from: 'donotreply@dG.com', // Replace with your email address
+        from: {
+          name: 'Shivam Bansal',
+          Username: process.env.User_name
+        }, // Replace with your email address
         to: req.body.email, // Replace with the recipient's email address
         subject: req.body.subject, // Replace with your desired subject
         // text: 'This is my first dummy email.', // Plain text content
@@ -222,6 +234,6 @@ app.post('/send-email', (req, res) => {
 
 })
 
-app.listen(10000, () => {
-    console.log('Server is running at PORT 10000');
+app.listen(8008, () => {
+    console.log('Server is running at PORT http://localhost:8008');
 })
